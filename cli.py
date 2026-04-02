@@ -1,6 +1,7 @@
 import click
 from rich.console import Console
 from rich.panel import Panel
+from recon import subdomain as subdomain_module
 
 console = Console()
 
@@ -15,7 +16,7 @@ def cli():
 def subdomains(domain, wordlist):
     """Enumerate subdomains for a DOMAIN."""
     console.print(Panel.fit(f"[bold cyan]Subdomain Enumeration[/bold cyan] → {domain}", border_style="cyan"))
-    # Module will go here in Step 2
+    subdomain_module.run(domain, wordlist)
 
 @cli.command()
 @click.argument("domain")
