@@ -2,6 +2,8 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 from recon import subdomain as subdomain_module
+from recon import directory as directory_module
+
 
 console = Console()
 
@@ -24,7 +26,7 @@ def subdomains(domain, wordlist):
 def directories(domain, wordlist):
     """Brute-force directories on a DOMAIN."""
     console.print(Panel.fit(f"[bold cyan]Directory Discovery[/bold cyan] → {domain}", border_style="cyan"))
-    # Module will go here in Step 3
+    directory_module.run(domain, wordlist)
 
 @cli.command()
 @click.argument("domain")
