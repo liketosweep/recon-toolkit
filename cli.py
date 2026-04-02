@@ -3,7 +3,7 @@ from rich.console import Console
 from rich.panel import Panel
 from recon import subdomain as subdomain_module
 from recon import directory as directory_module
-
+from recon import http_analyzer 
 
 console = Console()
 
@@ -33,7 +33,7 @@ def directories(domain, wordlist):
 def analyze(domain):
     """Analyze HTTP headers of a DOMAIN."""
     console.print(Panel.fit(f"[bold cyan]HTTP Analysis[/bold cyan] → {domain}", border_style="cyan"))
-    # Module will go here in Step 4
+    http_analyzer.run(domain)
 
 @cli.command()
 @click.argument("domain")
