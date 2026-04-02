@@ -4,6 +4,7 @@ from rich.panel import Panel
 from recon import subdomain as subdomain_module
 from recon import directory as directory_module
 from recon import http_analyzer 
+from recon import vuln_checker
 
 console = Console()
 
@@ -40,7 +41,7 @@ def analyze(domain):
 def vulncheck(domain):
     """Run basic vulnerability checks on a DOMAIN."""
     console.print(Panel.fit(f"[bold cyan]Vuln Checker[/bold cyan] → {domain}", border_style="cyan"))
-    # Module will go here in Step 5
+    vuln_checker.run(domain)
 
 @cli.command()
 @click.argument("domain")
