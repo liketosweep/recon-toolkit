@@ -213,3 +213,4 @@ report.json
 report.txt
 *.pyc 
 *.pyo 
+.vscode/
