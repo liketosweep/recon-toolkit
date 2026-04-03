@@ -16,10 +16,11 @@ def cli():
 @cli.command()
 @click.argument("domain")
 @click.option("--wordlist", default="wordlists/subdomains.txt", help="Path to subdomain wordlist")
-def subdomains(domain, wordlist):
+@click.option("--threads", default=10, help="Number of concurrent threads")
+def subdomains(domain, wordlist, threads):
     """Enumerate subdomains for a DOMAIN."""
     console.print(Panel.fit(f"[bold cyan]Subdomain Enumeration[/bold cyan] → {domain}", border_style="cyan"))
-    subdomain_module.run(domain, wordlist)
+    subdomain_module.run(domain, wordlist, threads)
 
 @cli.command()
 @click.argument("domain")
