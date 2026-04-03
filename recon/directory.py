@@ -22,22 +22,18 @@ def check_path(url):
 
 def run(domain, wordlist_path):
     console.print(f"\n[bold cyan]Starting directory discovery for:[/bold cyan] {domain}\n")
-
     try:
         with open(wordlist_path) as f:
             words = [line.strip() for line in f if line.strip()]
     except FileNotFoundError:
         console.print(f"[red]Wordlist not found:[/red] {wordlist_path}")
         return
-
     base_url = f"https://{domain}"
     found = []
-
     table = Table(title="Discovered Endpoints", border_style="cyan")
     table.add_column("Path", style="white")
     table.add_column("Status Code", justify="center")
     table.add_column("Note", style="dim")
-
     NOTES = {
         200: "Accessible",
         301: "Redirect",
@@ -46,22 +42,18 @@ def run(domain, wordlist_path):
         401: "Auth required",
         500: "Server error",
     }
-
     for word in words:
         url = f"{base_url}/{word}"
         console.print(f"[dim]Trying /{word}...[/dim]", end="\r")
         code = check_path(url)
-
         if code and code != 404:
             colored_code = STATUS_COLORS.get(code, f"[white]{code}[/white]")
             note = NOTES.get(code, "")
             table.add_row(f"/{word}", colored_code, note)
             found.append((word, code))
-
     if found:
         console.print(table)
         console.print(f"\n[bold green]Found {len(found)} interesting paths![/bold green]")
     else:
         console.print("[red]No interesting paths found.[/red]")
-
-    return found
+    return [(word, code) for word, code in found]

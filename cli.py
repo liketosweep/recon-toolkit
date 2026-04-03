@@ -5,6 +5,7 @@ from recon import subdomain as subdomain_module
 from recon import directory as directory_module
 from recon import http_analyzer 
 from recon import vuln_checker
+import json
 
 console = Console()
 
@@ -12,6 +13,28 @@ console = Console()
 def cli():
     """Recon Toolkit — Automated Web Reconnaissance"""
     pass
+
+def save_json(domain, path, subdomains_found, dirs_found, http_results, vuln_results):
+    report = {
+        "target": domain,
+        "subdomains": subdomains_found,
+        "directories": [{"path": f"/{p}", "status": c} for p, c in dirs_found],
+        "http_analysis": http_results,
+        "vulnerabilities": vuln_results,
+    }
+    with open(path, "w") as f:
+        json.dump(report, f, indent=4)
+
+def save_txt(domain, path, subdomains_found, dirs_found):
+    with open(path, "w") as f:
+        f.write(f"Recon Report — {domain}\n")
+        f.write("=" * 50 + "\n\n")
+        f.write("Subdomains Found:\n")
+        for s in subdomains_found:
+            f.write(f"  - {s}\n")
+        f.write("\nDirectories Found:\n")
+        for p, c in dirs_found:
+            f.write(f"  - /{p} ({c})\n")
 
 @cli.command()
 @click.argument("domain")
@@ -48,8 +71,9 @@ def vulncheck(domain):
 @click.argument("domain")
 @click.option("--wordlist-sub", default="wordlists/subdomains.txt")
 @click.option("--wordlist-dir", default="wordlists/directories.txt")
-@click.option("--output", default=None, help="Save results to a file")
-def full(domain, wordlist_sub, wordlist_dir, output):
+@click.option("--output", default=None, help="Save results to a file (.txt or .json)")
+@click.option("--threads", default=10, help="Threads for subdomain enumeration")
+def full(domain, wordlist_sub, wordlist_dir, output, threads):
     """Run the FULL recon pipeline on a DOMAIN."""
     console.print(Panel.fit(
         f"[bold green]Full Recon Pipeline[/bold green] → {domain}\n"
@@ -57,23 +81,20 @@ def full(domain, wordlist_sub, wordlist_dir, output):
         border_style="green"
     ))
     console.rule("[cyan]Step 1: Subdomain Enumeration[/cyan]")
-    subdomains_found = subdomain_module.run(domain, wordlist_sub)
+    subdomains_found = subdomain_module.run(domain, wordlist_sub, threads) or []
     console.rule("[cyan]Step 2: Directory Discovery[/cyan]")
-    directory_module.run(domain, wordlist_dir)
+    dirs_found = directory_module.run(domain, wordlist_dir) or []
     console.rule("[cyan]Step 3: HTTP Analysis[/cyan]")
-    http_analyzer.run(domain)
+    http_results = http_analyzer.run(domain) or {}
     console.rule("[cyan]Step 4: Vulnerability Checks[/cyan]")
-    vuln_checker.run(domain)
+    vuln_results = vuln_checker.run(domain) or {}
     console.rule("[bold green]Recon Complete[/bold green]")
     console.print(f"\n[bold green]✅ Full recon finished for:[/bold green] {domain}\n")
     if output:
-        with open(output, "w") as f:
-            f.write(f"Recon Report — {domain}\n")
-            f.write("=" * 50 + "\n\n")
-            if subdomains_found:
-                f.write("Subdomains Found:\n")
-                for s in subdomains_found:
-                    f.write(f"  - {s}\n")
+        if output.endswith(".json"):
+            save_json(domain, output, subdomains_found, dirs_found, http_results, vuln_results)
+        else:
+            save_txt(domain, output, subdomains_found, dirs_found)
         console.print(f"[green]Report saved to:[/green] {output}")
 
 if __name__ == "__main__":

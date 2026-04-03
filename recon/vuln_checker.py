@@ -50,36 +50,35 @@ def check_http_methods(domain):
 
 def run(domain):
     console.print(f"\n[bold cyan]Running vulnerability checks for:[/bold cyan] {domain}\n")
-
     table = Table(title="Vulnerability Check Results", border_style="cyan")
     table.add_column("Check", style="white")
     table.add_column("Result", justify="center")
     table.add_column("Detail", style="dim")
-
     vuln, location = check_open_redirect(domain)
     if vuln:
         table.add_row("Open Redirect", "[bold red]VULNERABLE[/bold red]", f"Redirects to: {location}")
     else:
         table.add_row("Open Redirect", "[green]OK[/green]", "No redirect detected")
-
     reflected = check_reflected_input(domain)
     if reflected:
         table.add_row("Reflected Input", "[bold red]VULNERABLE[/bold red]", "Input reflected in response — possible XSS")
     else:
         table.add_row("Reflected Input", "[green]OK[/green]", "Input not reflected")
-
     cors_vuln, acao = check_cors(domain)
     if cors_vuln:
         table.add_row("CORS Misconfiguration", "[bold red]VULNERABLE[/bold red]", f"Allows origin: {acao}")
     else:
         table.add_row("CORS Misconfiguration", "[green]OK[/green]", "No wildcard CORS detected")
-
     methods = check_http_methods(domain)
     if methods:
         detail = ", ".join([f"{m} ({c})" for m, c in methods])
         table.add_row("Dangerous HTTP Methods", "[yellow]WARNING[/yellow]", detail)
     else:
         table.add_row("Dangerous HTTP Methods", "[green]OK[/green]", "No dangerous methods allowed")
-
     console.print(table)
-    return
+    return {
+    "open_redirect": vuln,
+    "reflected_input": reflected,
+    "cors_misconfiguration": cors_vuln,
+    "dangerous_methods": [m for m, c in methods]
+    }
