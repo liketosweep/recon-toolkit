@@ -1,6 +1,7 @@
 import requests
 from rich.console import Console
 from rich.table import Table
+import time
 
 console = Console()
 
@@ -20,7 +21,7 @@ def check_path(url):
     except Exception:
         return None
 
-def run(domain, wordlist_path):
+def run(domain, wordlist_path, verbose=False):
     console.print(f"\n[bold cyan]Starting directory discovery for:[/bold cyan] {domain}\n")
     try:
         with open(wordlist_path) as f:
@@ -46,14 +47,17 @@ def run(domain, wordlist_path):
         url = f"{base_url}/{word}"
         console.print(f"[dim]Trying /{word}...[/dim]", end="\r")
         code = check_path(url)
+        time.sleep(0.1)
         if code and code != 404:
             colored_code = STATUS_COLORS.get(code, f"[white]{code}[/white]")
             note = NOTES.get(code, "")
             table.add_row(f"/{word}", colored_code, note)
             found.append((word, code))
+        elif verbose and code == 404:
+            console.print(f"[dim]404 → /{word}[/dim]")
     if found:
         console.print(table)
         console.print(f"\n[bold green]Found {len(found)} interesting paths![/bold green]")
     else:
         console.print("[red]No interesting paths found.[/red]")
-    return [(word, code) for word, code in found]
+    return found

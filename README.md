@@ -1,5 +1,10 @@
 # 🔍 Recon Toolkit
 
+![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python)
+![License](https://img.shields.io/github/license/liketosweep/recon-toolkit?style=flat-square)
+![Stars](https://img.shields.io/github/stars/liketosweep/recon-toolkit?style=flat-square)
+![Issues](https://img.shields.io/github/issues/liketosweep/recon-toolkit?style=flat-square)
+
 A modular command-line tool that automates web reconnaissance by discovering and analyzing a target's attack surface — built for bug bounty hunters and security researchers.
 
 ---
@@ -11,7 +16,7 @@ A modular command-line tool that automates web reconnaissance by discovering and
 python cli.py full reddit.com
 ```
 
-![Full Pipeline Output](assets/demo.png)
+![Full Pipeline Output](assets/sample output.gif)
 
 ---
 
@@ -75,6 +80,15 @@ recon-toolkit/
 │   └── directories.txt    # Directory wordlist
 ├── cli.py                 # Unified CLI entry point
 └── requirements.txt
+
+---
+
+## 📋 Wordlists
+Download SecLists wordlists before running:
+```bash
+curl -o wordlists/subdomains.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-5000.txt
+curl -o wordlists/directories.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/common.txt
+```
 
 ---
 

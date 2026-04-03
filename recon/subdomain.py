@@ -3,6 +3,7 @@ import requests
 from rich.console import Console
 from rich.table import Table
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
 
 console = Console()
 

@@ -47,11 +47,12 @@ def subdomains(domain, wordlist, threads):
 
 @cli.command()
 @click.argument("domain")
-@click.option("--wordlist", default="wordlists/directories.txt", help="Path to directory wordlist")
-def directories(domain, wordlist):
+@click.option("--wordlist", default="wordlists/directories.txt")
+@click.option("--verbose", is_flag=True, default=False, help="Show 404s too")
+def directories(domain, wordlist, verbose):
     """Brute-force directories on a DOMAIN."""
     console.print(Panel.fit(f"[bold cyan]Directory Discovery[/bold cyan] → {domain}", border_style="cyan"))
-    directory_module.run(domain, wordlist)
+    directory_module.run(domain, wordlist, verbose)
 
 @cli.command()
 @click.argument("domain")
