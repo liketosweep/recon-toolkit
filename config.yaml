@@ -1,0 +1,26 @@
+# ──────────────────────────────────────────────
+#   Recon Toolkit — Configuration
+#   All values below are defaults. Edit freely.
+# ──────────────────────────────────────────────
+
+# Brute-force thread count (subdomain module)
+threads: 20
+
+# Per-request timeout in seconds
+timeout: 5
+
+# Async concurrency (directory + port scanner)
+concurrency: 50
+
+wordlists:
+  subdomains:  wordlists/subdomains.txt
+  directories: wordlists/directories.txt
+
+# Optional API keys — leave blank to skip those sources
+api_keys:
+  shodan:     ""
+  virustotal: ""
+
+output:
+  default_format: json    # json | html | txt
+  output_dir: reports
