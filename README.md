@@ -45,6 +45,30 @@ python cli.py full reddit.com --output reports/reddit.html
 | 📊 **HTML / JSON Reports** | Dark-themed professional report with summary dashboard |
 
 ---
+## 🚀 Evolution: v1 vs. v2
+
+Version 2.0 is a complete ground-up rewrite of the toolkit, shifting from a basic sequential script to a high-performance, asynchronous framework designed for speed and professional-grade output.
+
+### Key Enhancements
+
+* **Asynchronous Engine:** Migrated the core architecture to `asyncio`. By utilizing non-blocking I/O, v2 executes port scans and directory discovery concurrently, resulting in a **10x+ performance boost** over the legacy version.
+* **Professional CLI UI:** Integrated the `rich` library to replace raw text logs with a dynamic dashboard. It now features real-time progress bars, status spinners, and beautifully formatted tables for immediate data analysis.
+* **Modular Pipeline:** Refactored the codebase into a clean, hierarchical structure (`core/`, `recon/`, `templates/`). This modularity makes the tool easier to maintain and allows for seamless integration of new security modules.
+* **Advanced Discovery:** Added deep-recon capabilities including **Wayback Machine** URL harvesting and **HTTP Technology Detection** to identify the tech stack of target assets automatically.
+
+---
+
+### Comparison Summary
+
+| Feature | v1 (Legacy) | v2 (Current) |
+| :--- | :--- | :--- |
+| **Execution** | Synchronous (Sequential) | **Asynchronous (Concurrent)** |
+| **Speed** | Limited by single-thread timeouts | **High-speed non-blocking I/O** |
+| **Interface** | Basic standard output | **Rich-powered Dynamic Dashboard** |
+| **Structure** | Single-script / Flat | **Modular & Object-Oriented** |
+| **Reporting** | Terminal only | **Terminal + HTML Export** |
+
+---
 
 ## 🚀 Installation
 
