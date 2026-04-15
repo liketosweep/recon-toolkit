@@ -55,7 +55,7 @@ async def _async_scan(host: str, ports: list[int], concurrency: int, timeout: fl
     open_ports = []
 
     with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"),
-                  BarColumn(), TaskProgressColumn(), console=console, transient=True) as prog:
+                BarColumn(), TaskProgressColumn(), console=console, transient=True) as prog:
         t = prog.add_task(f"[cyan]Scanning {len(tasks)} ports...", total=len(tasks))
         for coro in asyncio.as_completed(tasks):
             port, is_open = await coro
