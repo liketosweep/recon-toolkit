@@ -239,6 +239,14 @@ docker run --rm recon-toolkit full example.com
 docker run --rm -v $(pwd)/reports:/app/reports \
   recon-toolkit full example.com --output reports/example.html
 ```
+---
+### 🐳 Run with Docker (Recommended)
+You can run the full recon pipeline without installing local dependencies by using Docker:
+
+```bash
+docker build -t recon-toolkit .
+docker run --rm -it recon-toolkit --help
+```
 
 ---
 
