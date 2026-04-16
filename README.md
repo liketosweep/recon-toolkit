@@ -299,6 +299,23 @@ recon-toolkit/
 - [ ] Export to Markdown
 
 ---
+## 🚧 Limitations & Technical Debt
+
+While v2 brings significant performance improvements, there are known architectural limitations:
+* **Aggressive Async Speed:** The `asyncio` engine is highly concurrent. Without intelligent rate-limiting or request jitter, it is highly likely to trigger `Web Application Firewalls (WAFs)` or result in `IP blacklisting` on strict targets.
+* **State Management:** The toolkit currently executes in a `single` run. If a massive scan `fails` or is `interrupted halfway` , there is currently no `"resume"` state capability.
+* **UDP Scanning:** The current `port scanning module` is heavily optimized for `TCP` . UDP scanning remains basic and prone to `false negatives` due to the `stateless` nature of the protocol.
+
+## 🗺️ Future Plans
+
+As I continue to scale this framework, my immediate development focus includes:
+
+- [ ] **Kubernetes Orchestration:** Transitioning from a single Docker container to distributed Kubernetes Jobs, allowing for large-scale, segmented reconnaissance across cluster nodes.
+- [ ] **Smart Rate Limiting:** Implementing dynamic request delays and jitter in the `http_analyzer` and `directory` modules for better WAF evasion.
+- [ ] **CI/CD Integration:** Adding GitHub Actions for automated linting (`flake8`), unit testing (`pytest`), and automated Docker image publishing to Docker Hub.
+- [ ] **Database Integration:** Expanding the `reporter` module to push results directly to a database (e.g., PostgreSQL or MongoDB) for continuous attack surface monitoring.
+
+---
 
 ## ⚠️ Disclaimer
 
